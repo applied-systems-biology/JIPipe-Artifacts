@@ -1,0 +1,18 @@
+{
+    "name": "jipipe-python-adapter",
+    "version": "0.3.0",
+    "query": "org.python.jipipe-python-adapter:0.3.0-*",
+    "container": "artifacts/org/python/jipipe-python-adapter",
+    "maintainer": {
+        "name": "Ruman Gerst",
+        "email": "ruman.gerst@leibniz-hki.de"
+    },
+    "description": "Python Adapter for JIPipe",
+    "homepage": "https://github.com/applied-systems-biology/jipipe",
+    "license": "MIT",
+    "tags": [
+        "0.3.0-any"
+    ],
+    "includes": {
+    }
+}
