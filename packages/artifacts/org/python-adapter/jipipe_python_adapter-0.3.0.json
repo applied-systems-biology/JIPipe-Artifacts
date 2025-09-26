@@ -1,8 +1,8 @@
 {
-    "name": "jipipe-python-adapter",
+    "name": "jipipe_python_adapter",
     "version": "0.3.0",
-    "query": "org.hkijena.jipipe-python-adapter:0.3.0-*",
-    "container": "artifacts/org/hkijena/jipipe-python-adapter",
+    "query": "org.hkijena.jipipe_python_adapter:0.3.0-*",
+    "container": "artifacts/org/hkijena/jipipe_python_adapter",
     "maintainer": {
         "name": "Ruman Gerst",
         "email": "ruman.gerst@leibniz-hki.de"
