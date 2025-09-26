@@ -1,0 +1,45 @@
+<div class="package-card">
+    <div class="package-header">
+        <h3 class="package-name">
+            <i class="fas fa-cube"></i>
+            {{ .name }}
+        </h3>
+        <span class="package-version">{{ .version }}</span>
+    </div>
+    
+    <div class="package-body">
+        <p class="package-description">{{ .description }}</p>
+        
+        <div class="package-meta">
+            <div class="meta-item">
+                <i class="fas fa-user"></i>
+                <span>{{ .maintainer.name }}</span>
+            </div>
+            <div class="meta-item">
+                <i class="fas fa-envelope"></i>
+                <span>{{ .maintainer.email }}</span>
+            </div>
+            <div class="meta-item">
+                <i class="fas fa-code-branch"></i>
+                <span>{{ .license }}</span>
+            </div>
+        </div>
+        
+        <div class="package-tags">
+            {{ range $tag := .tags }}
+            <span class="tag">{{ $tag }}</span>
+            {{ end }}
+        </div>
+        
+        <div class="package-actions">
+            <a href="{{ .homepage }}" class="btn btn-primary" target="_blank">
+                <i class="fas fa-external-link-alt"></i>
+                Homepage
+            </a>
+            <button class="btn btn-secondary copy-query" data-query="{{ .query }}">
+                <i class="fas fa-copy"></i>
+                Copy Query
+            </button>
+        </div>
+    </div>
+</div>

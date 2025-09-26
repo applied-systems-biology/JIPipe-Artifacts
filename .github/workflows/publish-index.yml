@@ -34,10 +34,25 @@ jobs:
             --prefix artifacts \
             --strict
 
+      - name: Copy index.json to Hugo data directory
+        run: |
+          cp dist/index.json template/data/index.json
+
+      - name: Install Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: 'latest'
+          extended: true
+
+      - name: Build Hugo site
+        run: |
+          cd template
+          hugo
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: site
+          path: template/public
 
   deploy-pages:
     needs: build

@@ -1,0 +1,80 @@
+{
+  "packages": [
+    {
+      "name": "python_prepackaged",
+      "version": "3.8",
+      "query": "org.python.python_prepackaged:3.8-*",
+      "container": "artifacts/org/python/python_prepackaged",
+      "maintainer": {
+        "name": "Ruman Gerst",
+        "email": "ruman.gerst@leibniz-hki.de"
+      },
+      "description": "Standalone Python distribution",
+      "homepage": "https://github.com/applied-systems-biology/jipipe",
+      "license": "MPL-2.0",
+      "tags": [
+        "3.8-windows_amd64",
+        "3.8-macos_amd64",
+        "3.8-linux_amd64"
+      ],
+      "includes": {
+        "pip": [
+          "imageio==2.19.3",
+          "joblib==1.1.0",
+          "networkx==2.8.4",
+          "numpy==1.23.1",
+          "packaging==21.3",
+          "Pillow==9.2.0",
+          "pyparsing==3.0.9",
+          "python-dateutil==2.8.2",
+          "pytz==2022.1",
+          "PyWavelets==1.3.0",
+          "scikit-image==0.19.3",
+          "scikit-learn==1.1.1",
+          "scipy==1.8.1",
+          "six==1.16.0",
+          "threadpoolctl==3.1.0",
+          "tifffile==2022.5.4"
+        ]
+      }
+    },
+    {
+      "name": "python_prepackaged",
+      "version": "3.10.15.1000",
+      "query": "org.python.python_prepackaged:3.10.15.1000-*",
+      "container": "artifacts/org/python/python_prepackaged",
+      "maintainer": {
+        "name": "Ruman Gerst",
+        "email": "ruman.gerst@leibniz-hki.de"
+      },
+      "description": "Standalone Python distribution",
+      "homepage": "https://github.com/applied-systems-biology/jipipe",
+      "license": "MPL-2.0",
+      "tags": [
+        "3.10.15.1000-windows_amd64",
+        "3.10.15.1000-macos_amd64",
+        "3.10.15.1000-linux_amd64"
+      ],
+      "includes": {
+        "pip": [
+          "imageio==2.19.3",
+          "joblib==1.1.0",
+          "networkx==2.8.4",
+          "numpy==1.23.1",
+          "packaging==21.3",
+          "Pillow==9.2.0",
+          "pyparsing==3.0.9",
+          "python-dateutil==2.8.2",
+          "pytz==2022.1",
+          "PyWavelets==1.3.0",
+          "scikit-image==0.19.3",
+          "scikit-learn==1.1.1",
+          "scipy==1.8.1",
+          "six==1.16.0",
+          "threadpoolctl==3.1.0",
+          "tifffile==2022.5.4"
+        ]
+      }
+    }
+  ]
+}

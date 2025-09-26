@@ -1,0 +1,25 @@
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About</h3>
+                <p>{{ .Site.Params.description | default "JIPipe Package Index" }}</p>
+            </div>
+            <div class="footer-section">
+                <h3>Links</h3>
+                <ul>
+                    <li><a href="{{ .Site.Params.github_url | default "https://github.com/applied-systems-biology/jipipe" }}">GitHub</a></li>
+                    <li><a href="{{ .Site.Params.documentation_url | default "#" }}">Documentation</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>{{ .Site.Params.maintainer_name | default "Ruman Gerst" }}</p>
+                <p>{{ .Site.Params.maintainer_email | default "ruman.gerst@leibniz-hki.de" }}</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; {{ now.Year }} {{ .Site.Title }}. {{ .Site.Params.copyright | default "All rights reserved." }}</p>
+        </div>
+    </div>
+</footer>

@@ -1,0 +1,19 @@
+<header class="header">
+    <div class="container">
+        <div class="header-content">
+            <h1 class="site-title">
+                <a href="{{ .Site.BaseURL }}" class="site-link">
+                    <img src="{{ "favicon.ico" | relURL }}" alt="Favicon" class="favicon-icon">
+                    {{ .Site.Title }}
+                </a>
+            </h1>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="{{ .Site.BaseURL }}">Home</a></li>
+                    <li class="nav-item"><a href="#packages">Packages</a></li>
+                    <li class="nav-item"><a href="#about">About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>

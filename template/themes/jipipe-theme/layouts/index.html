@@ -1,0 +1,43 @@
+{{ define "main" }}
+<section id="hero" class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title">{{ .Site.Title }}</h1>
+            <p class="hero-description">{{ .Site.Params.description | default "Browse and discover JIPipe packages" }}</p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number">{{ len .Site.Data.index.packages }}</span>
+                    <span class="stat-label">Packages</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="packages" class="packages-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Available Packages</h2>
+            <p class="section-description">Browse through our collection of JIPipe packages</p>
+        </div>
+        
+        <div class="packages-grid">
+            {{ range $package := .Site.Data.index.packages }}
+            {{ partial "package-card.html" $package }}
+            {{ end }}
+        </div>
+    </div>
+</section>
+
+<section id="about" class="about-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">About JIPipe</h2>
+        </div>
+        <div class="about-content">
+            <p>JIPipe is a platform for image analysis and data processing. This package index provides easy access to prepackaged software and dependencies for various computational tasks.</p>
+            <p>All packages are carefully curated and tested to ensure compatibility and reliability.</p>
+        </div>
+    </div>
+</section>
+{{ end }}

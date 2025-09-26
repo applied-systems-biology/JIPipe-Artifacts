@@ -1,0 +1,21 @@
+baseURL = 'https://applied-systems-biology.github.io/JIPipe-Artifacts/'
+languageCode = 'en-us'
+title = 'JIPipe Artifact Package Index'
+theme = 'jipipe-theme'
+enableRobotsTXT = true
+enableEmoji = true
+enableGitInfo = false
+disableKinds = ['rss', 'sitemap', 'taxonomy']
+
+[params]
+description = "Browse and discover JIPipe artifacts packages"
+github_url = "https://github.com/applied-systems-biology/jipipe"
+documentation_url = "https://applied-systems-biology.github.io/JIPipe-Documentation/"
+maintainer_name = "Ruman Gerst"
+maintainer_email = "ruman.gerst@leibniz-hki.de"
+copyright = "JIPipe was developed by Research Group Applied Systems Biology\nHead: Prof. Dr. Marc Thilo Figge\nHKI-Center for Systems Biology of Infection\nLeibniz Institute for Natural Product Research and Infection Biology – Hans Knöll Insitute (HKI)\nAdolf-Reichwein-Straße 23, 07745 Jena, Germany.\nLicensed under MIT."
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
