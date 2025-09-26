@@ -70,6 +70,7 @@ def build_index(packages_dir: Path, owner: str, repo: str, prefix: str, strict: 
             "version": pkg["version"].strip(),
             "query": pkg["query"].strip(),
             "tags": sorted(set(pkg.get("tags", []))),
+            "container": container,
             "maintainer": {
                 "name": pkg["maintainer"]["name"].strip(),
                 "email": pkg["maintainer"]["email"].strip()
