@@ -1,0 +1,77 @@
+name: Build & Publish Artifacts Index
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write         # commit to gh-pages
+  pages: write            # deploy Pages
+  id-token: write
+  packages: write         # push ORAS artifact to GHCR (optional)
+
+env:
+  INDEX_OWNER: applied-systems-biology
+  INDEX_REPO: jipipe
+  INDEX_PREFIX: maven
+  INDEX_REPO_PATH: artifacts/index
+  INDEX_TAG: latest
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build validated index.json
+        run: |
+            python3 scripts/build_index_validating.py \
+            --packages-dir packages \
+            --out dist/index.json \
+            --owner applied-systems-biology \
+            --repo jipipe \
+            --prefix artifacts \
+            --strict
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy-pages:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4
+
+#   push-oras-index:
+#     needs: build
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+
+#       - name: Install ORAS
+#         run: |
+#           curl -fsSL https://oras.land/install.sh | sh
+#           sudo mv oras /usr/local/bin/oras
+#           oras version
+
+#       - name: Pull built artifact
+#         run: |
+#           # get the index.json produced in previous job (we can rebuild here too)
+#           python3 scripts/build_index.py
+
+#       - name: Login GHCR (packages: write)
+#         run: echo "${{ secrets.GITHUB_TOKEN }}" | oras login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+#       - name: Push index.json as ORAS artifact
+#         run: |
+#           oras push ghcr.io/${{ env.INDEX_OWNER }}/${{ env.INDEX_REPO }}/${{ env.INDEX_REPO_PATH }}:${{ env.INDEX_TAG }} \
+#             dist/index.json:application/json \
+#             --artifact-type application/vnd.asb.index.v1 \
+#             --annotation org.opencontainers.image.source="https://github.com/${{ env.INDEX_OWNER }}/${{ env.INDEX_REPO }}"
