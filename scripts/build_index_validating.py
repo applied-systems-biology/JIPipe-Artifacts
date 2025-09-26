@@ -80,7 +80,9 @@ def build_index(packages_dir: Path, owner: str, repo: str, prefix: str, strict: 
             if opt in pkg:
                 entry[opt] = pkg[opt]
 
-        index["packages"][container] = entry
+        # Use container + version as key to support multiple versions of the same package
+        unique_key = f"{container}:{pkg['version']}"
+        index["packages"][unique_key] = entry
 
     if all_errs:
         print("[ERROR] Validation failed for one or more package files:\n")
