@@ -9,6 +9,7 @@ disableKinds = ['rss', 'sitemap', 'taxonomy']
 
 [params]
 description = "Browse and discover JIPipe artifacts packages"
+jipipe_url = "https://jipipe.org/"
 github_url = "https://github.com/applied-systems-biology/jipipe"
 documentation_url = "https://applied-systems-biology.github.io/JIPipe-Documentation/"
 ghcr_url = "ghcr.io/applied-systems-biology/jipipe/"
