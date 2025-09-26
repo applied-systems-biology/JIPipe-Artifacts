@@ -24,22 +24,15 @@
                 <span>{{ .license }}</span>
             </div>
         </div>
+
+         <div class="package-query">
+            <pre>{{ .query }}</pre>
+         </div>
         
         <div class="package-tags">
             {{ range $tag := .tags }}
-            <span class="tag">{{ $tag }}</span>
+            <button class="btn btn-secondary copy-query tag" data-query="{{ $.query }}"><i class="fas fa-copy"></i> {{ $tag }}</button>
             {{ end }}
-        </div>
-        
-        <div class="package-actions">
-            <a href="{{ .homepage }}" class="btn btn-primary" target="_blank">
-                <i class="fas fa-external-link-alt"></i>
-                Homepage
-            </a>
-            <button class="btn btn-secondary copy-query" data-query="{{ .query }}">
-                <i class="fas fa-copy"></i>
-                Copy Query
-            </button>
         </div>
     </div>
 </div>
