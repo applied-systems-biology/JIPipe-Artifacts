@@ -2,7 +2,7 @@ name: Build & Publish Artifacts Index
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   workflow_dispatch: {}
 
 permissions:
