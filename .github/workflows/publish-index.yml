@@ -49,6 +49,10 @@ jobs:
           cd template
           hugo
 
+      - name: Copy index.json to Hugo public directory
+        run: |
+          cp dist/index.json template/public/index.json
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
