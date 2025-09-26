@@ -50,7 +50,6 @@ def build_index(packages_dir: Path, owner: str, repo: str, prefix: str, strict: 
     }
 
     all_errs: List[str] = []
-    seen_containers = set()
 
     for f in files:
         try:
@@ -65,10 +64,6 @@ def build_index(packages_dir: Path, owner: str, repo: str, prefix: str, strict: 
             continue
 
         container = pkg["container"].strip("/")
-        if container in seen_containers:
-            all_errs.append(f"{f.relative_to(packages_dir)}: duplicate container '{container}'")
-            continue
-        seen_containers.add(container)
 
         entry: Dict[str, Any] = {
             "name": pkg["name"].strip(),
