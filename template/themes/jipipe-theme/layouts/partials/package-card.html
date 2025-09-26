@@ -31,7 +31,7 @@
         
         <div class="package-tags">
             {{ range $tag := .tags }}
-            <button class="btn btn-secondary copy-query tag" data-query="{{ $.query }}"><i class="fas fa-copy"></i> {{ $tag }}</button>
+            <button class="btn btn-secondary copy-query tag" data-query="oras pull {{ site.Params.ghcr_url }}{{ $.container }}:{{ $tag }}"><i class="fas fa-copy"></i> {{ $tag }}</button>
             {{ end }}
         </div>
     </div>
