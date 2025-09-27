@@ -1,8 +1,31 @@
 // Copy to clipboard functionality
 document.addEventListener('DOMContentLoaded', function() {
+    // Handle existing copy-query buttons (tags)
     const copyButtons = document.querySelectorAll('.copy-query');
     
     copyButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const query = this.getAttribute('data-query');
+            
+            if (navigator.clipboard && window.isSecureContext) {
+                // Modern browsers with clipboard API
+                navigator.clipboard.writeText(query).then(() => {
+                    showCopySuccess(this);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                    fallbackCopyText(query, this);
+                });
+            } else {
+                // Fallback for older browsers
+                fallbackCopyText(query, this);
+            }
+        });
+    });
+
+    // Handle ORAS source copy buttons
+    const orasCopyButtons = document.querySelectorAll('.copy-oras');
+    
+    orasCopyButtons.forEach(button => {
         button.addEventListener('click', function() {
             const query = this.getAttribute('data-query');
             

@@ -2,7 +2,14 @@
     "name": "python_prepackaged",
     "version": "3.8",
     "query": "org.python.python_prepackaged:3.8-*",
-    "container": "artifacts/org/python/python_prepackaged",
+    "sources": [
+        {
+            "type": "oras",
+            "repo": "ghcr",
+            "rel": "artifacts/org/python/python_prepackaged",
+            "oci-ref": "ghcr.io/applied-systems-biology/jipipe/artifacts/org/python/python_prepackaged"
+        }
+    ],
     "maintainer": {
         "name": "Ruman Gerst",
         "email": "ruman.gerst@leibniz-hki.de"

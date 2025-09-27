@@ -2,7 +2,14 @@
     "name": "jipipe_python_adapter",
     "version": "0.3.0",
     "query": "org.hkijena.jipipe_python_adapter:0.3.0-*",
-    "container": "artifacts/org/hkijena/jipipe_python_adapter",
+    "sources": [
+        {
+            "type": "oras",
+            "repo": "ghcr",
+            "rel": "artifacts/org/hkijena/jipipe_python_adapter",
+            "oci-ref": "ghcr.io/applied-systems-biology/jipipe/artifacts/org/hkijena/jipipe_python_adapter"
+        }
+    ],
     "maintainer": {
         "name": "Ruman Gerst",
         "email": "ruman.gerst@leibniz-hki.de"

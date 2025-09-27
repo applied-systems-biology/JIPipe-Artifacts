@@ -25,13 +25,29 @@
             </div>
         </div>
 
-         <div class="package-query">
+        <div class="package-query">
             <pre>{{ .query }}</pre>
-         </div>
-        
-        <div class="package-tags">
-            {{ range $tag := .tags }}
-            <button class="btn btn-secondary copy-query tag" data-query="oras pull {{ site.Params.ghcr_url }}{{ $.container }}:{{ $tag }}"><i class="fas fa-copy"></i> {{ $tag }}</button>
+        </div>
+
+        <div class="package-sources">
+            <h4 class="sources-title">Sources:</h4>
+            {{ range $source := .sources }}
+                <div class="source-item">
+                    <div class="source-name">{{ $source.type }}/{{ $source.repo }}</div>
+                    {{ if eq $source.type "oras" }}
+                        {{ range $tag := $.tags }}
+                        <button class="btn btn-secondary copy-oras" data-query="oras pull {{ index $source "oci-ref" }}:{{ $tag }}">
+                            <i class="fas fa-copy"></i> {{ $tag }}
+                        </button>
+                        {{ end }}
+                    {{ else if eq $source.type "http" }}
+                        {{ range $tag, $url := $source.urls }}
+                            <a href="{{ $url }}" class="btn btn-secondary http-link" target="_blank" rel="noopener">
+                            <i class="fas fa-download"></i> {{ $tag }}
+                            </a>
+                        {{ end }}                        
+                    {{ end }}
+                </div>
             {{ end }}
         </div>
     </div>

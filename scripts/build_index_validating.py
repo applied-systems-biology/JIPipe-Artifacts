@@ -13,10 +13,24 @@ def is_nonempty_str(x): return isinstance(x, str) and len(x.strip()) > 0
 
 def validate_package(pkg: Dict[str, Any], relpath: Path) -> List[str]:
     errs = []
-    req_str = ["name", "version", "query", "container"]
+    req_str = ["name", "version", "query"]
     for k in req_str:
         if k not in pkg or not is_nonempty_str(pkg[k]):
             errs.append(f"{relpath}: missing or empty '{k}' (string required)")
+    
+    # Validate sources field (required)
+    if "sources" not in pkg:
+        errs.append(f"{relpath}: 'sources' field is required")
+    elif not isinstance(pkg["sources"], list) or len(pkg["sources"]) == 0:
+        errs.append(f"{relpath}: 'sources' must be a non-empty array")
+    else:
+        for i, source in enumerate(pkg["sources"]):
+            errs.extend(validate_source(source, relpath, i))
+    
+    # Check for deprecated container field
+    if "container" in pkg:
+        errs.append(f"{relpath}: 'container' field is deprecated and no longer supported. Please use 'sources' field instead.")
+    
     m = pkg.get("maintainer")
     if not isinstance(m, dict) or not is_nonempty_str(m.get("name","")) or not is_nonempty_str(m.get("email","")):
         errs.append(f"{relpath}: 'maintainer' must be an object with non-empty 'name' and 'email'")
@@ -25,13 +39,48 @@ def validate_package(pkg: Dict[str, Any], relpath: Path) -> List[str]:
         errs.append(f"{relpath}: 'tags' must be an array of non-empty strings")
     if "includes" in pkg and not isinstance(pkg["includes"], dict):
         errs.append(f"{relpath}: 'includes' must be an object if present")
-    if "container" in pkg and isinstance(pkg["container"], str):
-        c = pkg["container"]
-        if c.startswith("/") or c.endswith("/") or " " in c:
-            errs.append(f"{relpath}: 'container' should be a slash-separated path without leading/trailing slash or spaces (got '{c}')")
     if "query" in pkg and isinstance(pkg["query"], str):
         if ":" not in pkg["query"]:
             errs.append(f"{relpath}: 'query' must look like 'group.artifact:tagPattern' (e.g., org.foo.bar:1.0-*)")
+    return errs
+
+def validate_source(source: Dict[str, Any], relpath: Path, index: int) -> List[str]:
+    errs = []
+    prefix = f"{relpath}: sources[{index}]"
+    
+    # Validate type field
+    if "type" not in source or not is_nonempty_str(source["type"]):
+        errs.append(f"{prefix}: missing or empty 'type' field")
+    elif source["type"] not in ["oras", "http"]:
+        errs.append(f"{prefix}: 'type' must be either 'oras' or 'http'")
+    
+    # Validate ORAS sources
+    if source.get("type") == "oras":
+        required_fields = ["repo", "rel", "oci-ref"]
+        for field in required_fields:
+            if field not in source or not is_nonempty_str(source[field]):
+                errs.append(f"{prefix}: missing or empty '{field}' field for ORAS source")
+        
+        # Validate oci-ref format
+        oci_ref = source.get("oci-ref", "")
+        if not oci_ref.startswith("ghcr.io/"):
+            errs.append(f"{prefix}: 'oci-ref' must start with 'ghcr.io/' for ORAS sources")
+    
+    # Validate HTTPS sources
+    elif source.get("type") == "http":
+        if "repo" not in source or not is_nonempty_str(source["repo"]):
+            errs.append(f"{prefix}: missing or empty 'repo' field for HTTP source")
+        
+        if "urls" not in source or not isinstance(source["urls"], dict):
+            errs.append(f"{prefix}: 'urls' must be an object for HTTP source")
+        else:
+            # Validate urls structure
+            for platform, url in source["urls"].items():
+                if not is_nonempty_str(platform) or not is_nonempty_str(url):
+                    errs.append(f"{prefix}: 'urls' must contain non-empty platform-to-url mappings")
+                elif not url.startswith(("http://", "https://")):
+                    errs.append(f"{prefix}: URL for platform '{platform}' must start with 'http://' or 'https://'")
+    
     return errs
 
 def build_index(packages_dir: Path, owner: str, repo: str, prefix: str, strict: bool, out_path: Path) -> int:
@@ -63,26 +112,29 @@ def build_index(packages_dir: Path, owner: str, repo: str, prefix: str, strict: 
             all_errs.extend(errs)
             continue
 
-        container = pkg["container"].strip("/")
-
+        # Create entry using query as the unique key
         entry: Dict[str, Any] = {
             "name": pkg["name"].strip(),
             "version": pkg["version"].strip(),
             "query": pkg["query"].strip(),
             "tags": sorted(set(pkg.get("tags", []))),
-            "container": container,
             "maintainer": {
                 "name": pkg["maintainer"]["name"].strip(),
                 "email": pkg["maintainer"]["email"].strip()
             },
             "updated": now_iso()
         }
+        
+        # Handle sources field
+        entry["sources"] = pkg["sources"]
+        
+        # Use query field as the unique key
+        unique_key = pkg["query"].strip()
+        
         for opt in ("description", "homepage", "license", "includes"):
             if opt in pkg:
                 entry[opt] = pkg[opt]
 
-        # Use container + version as key to support multiple versions of the same package
-        unique_key = f"{container}:{pkg['version']}"
         index["packages"][unique_key] = entry
 
     if all_errs:

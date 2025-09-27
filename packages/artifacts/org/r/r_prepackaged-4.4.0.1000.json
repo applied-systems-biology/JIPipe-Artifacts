@@ -2,7 +2,14 @@
     "name": "r_prepackaged",
     "version": "4.4.0.1000",
     "query": "org.r.r_prepackaged:4.4.0.1000-*",
-    "container": "artifacts/org/r/r_prepackaged",
+    "sources": [
+        {
+            "type": "oras",
+            "repo": "ghcr",
+            "rel": "artifacts/org/r/r_prepackaged",
+            "oci-ref": "ghcr.io/applied-systems-biology/jipipe/artifacts/org/r/r_prepackaged"
+        }
+    ],
     "maintainer": {
         "name": "Ruman Gerst",
         "email": "ruman.gerst@leibniz-hki.de"
