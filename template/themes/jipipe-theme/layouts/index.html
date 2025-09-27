@@ -4,9 +4,30 @@
         <div class="hero-content">
             <h1 class="hero-title">{{ .Site.Title }}</h1>
             <p class="hero-description">{{ .Site.Params.description | default "Browse and discover JIPipe packages" }}</p>
+            
+            <!-- Search Interface -->
+            <div class="search-container">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search search-icon"></i>
+                    <input
+                        type="text"
+                        id="package-search"
+                        class="search-input"
+                        placeholder="Search packages by name, description, version, maintainer, or tags..."
+                        autocomplete="off"
+                    >
+                    <button class="search-clear" id="search-clear" style="display: none;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="search-results-info" id="search-results-info" style="display: none;">
+                    <span id="results-count"></span> packages found
+                </div>
+            </div>
+            
             <div class="hero-stats">
                 <div class="stat-item">
-                    <span class="stat-number">{{ len .Site.Data.index.packages }}</span>
+                    <span class="stat-number" id="total-packages">{{ len .Site.Data.index.packages }}</span>
                     <span class="stat-label">Packages</span>
                 </div>
             </div>
@@ -16,10 +37,15 @@
 
 <section id="packages" class="packages-section">
     <div class="container">
-        <div class="packages-grid">
+        <div class="packages-grid" id="packages-grid">
             {{ range $package := .Site.Data.index.packages }}
             {{ partial "package-card.html" $package }}
             {{ end }}
+        </div>
+        <div class="no-results" id="no-results" style="display: none;">
+            <i class="fas fa-search"></i>
+            <h3>No packages found</h3>
+            <p>Try adjusting your search terms</p>
         </div>
     </div>
 </section>
