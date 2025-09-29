@@ -3,6 +3,13 @@
 from pathlib import Path
 import argparse
 import json
+import requests
+import os
+import sys
+import re
+import urllib.parse
+import oras
+import oras.client
 
 def collect_package_downloads(packages_dir : Path):
     downloads = []
@@ -23,7 +30,7 @@ def collect_package_downloads(packages_dir : Path):
                         "file": f,
                         "tag": tag,
                         "type": "http",
-                        "uri": url,
+                        "reference": url,
                     })
             elif source["type"] == "oras":
                 for tag in tags:
@@ -31,7 +38,7 @@ def collect_package_downloads(packages_dir : Path):
                         "file": f,
                         "tag": tag,
                         "type": "oras",
-                        "uri": source["oci-ref"] + ":" + tag,
+                        "reference": source["oci-ref"] + ":" + tag,
                     })
             else:
                 print("Warning: Unknown source type {}".format(source["type"]))
@@ -39,11 +46,33 @@ def collect_package_downloads(packages_dir : Path):
     return downloads
 
 def check_http(url):
-    # TODO
-    return False
+    try:
+        response = requests.head(url, timeout=10, allow_redirects=True)
+        return response.status_code == 200
+    except requests.exceptions.RequestException:
+        return False
 
-def check_oras(uri):
-    return False
+def check_oras(oci_ref):
+    """
+    Check if an ORAS package reference is accessible.
+
+    Args:
+        oci_ref (str): The full OCI reference including tag (e.g., "ghcr.io/namespace/repo:tag")
+
+    Returns:
+        bool: True if the reference is accessible, False otherwise
+    """
+    try:
+        # Create an ORAS client
+        client = oras.client.OrasClient()
+        manifest = client.get_manifest(oci_ref)
+
+        print(manifest)
+
+        return True
+    except Exception as e:
+        print(e)
+        return False
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description="Check if packages can be downloaded.")
@@ -52,9 +81,35 @@ if __name__ == "__main__":
     packages_dir = Path(args.packages_dir)
     downloads = collect_package_downloads(packages_dir)
 
-    # TODO: go through each download, check based on type if it's valid
-    # Collect successes, failures
-    # At the end print: (checkmark) vs (cross) [file] : [tag] : [type] : [uri]
-    # Summary at the end
-    # exit with error code if failure
+    successes = []
+    failures = []
+
+    for download in downloads:
+        is_valid = False
+        if download["type"] == "http":
+            is_valid = check_http(download["reference"])
+        elif download["type"] == "oras":
+            is_valid = check_oras(download["reference"])
+        
+        if is_valid:
+            successes.append(download)
+        else:
+            failures.append(download)
+
+    # Print results with formatted output
+    for download in successes:
+        print(f"✓ [{download['file']}] : [{download['tag']}] : [{download['type']}] : [{download['reference']}]")
+    
+    for download in failures:
+        print(f"✗ [{download['file']}] : [{download['tag']}] : [{download['type']}] : [{download['reference']}]")
+
+    # Print summary statistics
+    total = len(successes) + len(failures)
+    print(f"\nSummary: {len(successes)} successful, {len(failures)} failed, {total} total")
+
+    # Exit with proper error code
+    if failures:
+        sys.exit(1)
+    else:
+        sys.exit(0)
 
