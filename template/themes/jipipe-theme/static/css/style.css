@@ -133,10 +133,46 @@ body {
     margin: 0 auto;
 }
 
-/* Packages section */
-.packages-section {
-    padding: 4rem 0;
+/* Main content section */
+.main-content-section {
+    padding: 2rem 0;
     background: #fff;
+    min-height: 100vh;
+}
+
+.content-wrapper {
+    display: flex;
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Filter column */
+.filter-column {
+    flex: 0 0 300px;
+    position: sticky;
+    top: 100px;
+    height: fit-content;
+    max-height: calc(100vh - 120px);
+    align-self: flex-start;
+}
+
+.filter-column .filter-menu {
+    width: 100%;
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
+}
+
+/* Content column */
+.content-column {
+    flex: 1;
+    min-width: 0;
+}
+
+.packages-section {
+    padding: 0;
+    background: transparent;
 }
 
 .packages-grid {
@@ -610,4 +646,389 @@ body {
 @keyframes spin {
     0% { transform: translateY(-50%) rotate(0deg); }
     100% { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Filter Menu Styles */
+.filter-menu {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e1e8ed;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 100;
+}
+
+/* Desktop layout */
+@media (min-width: 768px) {
+    .filter-column {
+        position: sticky;
+        top: 100px;
+        height: fit-content;
+        max-height: calc(100vh - 120px);
+        align-self: flex-start;
+    }
+    
+    .filter-menu {
+        width: 100%;
+        max-height: calc(100vh - 140px);
+        overflow-y: auto;
+    }
+    
+    .filter-content {
+        display: block !important;
+        max-height: none;
+    }
+    
+    .filter-search {
+        padding: 1rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .filter-options {
+        max-height: calc(100vh - 300px);
+        overflow-y: auto;
+    }
+}
+
+/* Mobile layout */
+@media (max-width: 767px) {
+    .main-content-section {
+        padding: 1rem 0;
+    }
+    
+    .content-wrapper {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .filter-column {
+        flex: 1;
+        position: relative !important;
+        top: 0 !important;
+        height: auto !important;
+        max-height: none !important;
+        align-self: stretch;
+    }
+    
+    .filter-menu {
+        max-height: none;
+    }
+    
+    .filter-content {
+        display: block;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+    
+    .filter-column .filter-menu {
+        width: 100%;
+        max-height: 400px;
+    }
+}
+
+.filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #e1e8ed;
+}
+
+.filter-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.filter-clear {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.filter-clear:hover {
+    background: #f8f9fa;
+    color: #e74c3c;
+}
+
+.filter-clear:focus {
+    outline: 2px solid #e74c3c;
+    outline-offset: 2px;
+}
+
+.filter-search {
+    position: relative;
+    padding: 1rem;
+    border-bottom: 1px solid #e1e8ed;
+}
+
+.filter-search i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 0.9rem;
+    z-index: 1;
+}
+
+.filter-search input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.3s ease;
+    background: #fff;
+    color: #333;
+}
+
+.filter-search input:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.filter-search input::placeholder {
+    color: #999;
+}
+
+.filter-options {
+    padding: 0.5rem;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.filter-option {
+    margin-bottom: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.filter-option:last-child {
+    margin-bottom: 0;
+}
+
+.filter-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+    border: 2px solid transparent;
+}
+
+.filter-label:hover {
+    background: #f8f9fa;
+    border-color: #dee2e6;
+}
+
+.filter-radio {
+    width: 18px;
+    height: 18px;
+    accent-color: #3498db;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin: 0;
+}
+
+.filter-text {
+    flex: 1;
+    font-size: 0.9rem;
+    color: #495057;
+    line-height: 1.4;
+}
+
+.filter-count-badge {
+    background: #6c757d;
+    color: white;
+    padding: 0.125rem 0.375rem;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    min-width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.filter-option.selected .filter-label {
+    background: rgba(52, 152, 219, 0.12);
+    border-color: #3498db;
+    box-shadow: 0 2px 4px rgba(52, 152, 219, 0.1);
+}
+
+.filter-option.selected .filter-text {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.filter-option.selected .filter-count-badge {
+    background: #3498db;
+}
+
+/* Radio button custom styling */
+.filter-radio {
+    appearance: none;
+    border: 2px solid #dee2e6;
+    border-radius: 50%;
+    position: relative;
+    transition: all 0.2s ease;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin: 0;
+}
+
+.filter-radio:checked {
+    border-color: #3498db;
+    background: #3498db;
+}
+
+.filter-radio:checked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: white;
+}
+
+.filter-radio:focus {
+    outline: 2px solid #3498db;
+    outline-offset: 2px;
+}
+
+/* Scrollbar styling for filter options */
+.filter-options::-webkit-scrollbar {
+    width: 6px;
+}
+
+.filter-options::-webkit-scrollbar-track {
+    background: #f8f9fa;
+    border-radius: 3px;
+}
+
+.filter-options::-webkit-scrollbar-thumb {
+    background: #dee2e6;
+    border-radius: 3px;
+}
+
+.filter-options::-webkit-scrollbar-thumb:hover {
+    background: #ced4da;
+}
+
+/* Enhanced visual feedback for selected filters */
+.filter-option.selected .filter-label {
+    background: #e3f2fd;
+    border-left: 3px solid #3498db;
+    padding-left: calc(0.5rem - 3px);
+}
+
+.filter-option.selected .filter-text {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* Loading state for filter menu */
+.filter-menu.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.filter-menu.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid #3498db;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Animation for filter menu appearance */
+.filter-menu {
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Enhanced accessibility for filter menu */
+.filter-menu:focus-within {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.filter-checkbox:focus {
+    outline: 2px solid #3498db;
+    outline-offset: 2px;
+}
+
+.filter-label:focus {
+    outline: 2px solid #3498db;
+    outline-offset: 2px;
+}
+
+/* Additional visual enhancements */
+.filter-option {
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.filter-option:hover .filter-label {
+    background: #f8f9fa;
+}
+
+.filter-option.selected .filter-label {
+    background: #e3f2fd;
+    border-left-color: #2980b9;
+}
+
+/* Improved z-index management for overlapping elements */
+.filter-menu {
+    z-index: 100;
+}
+
+.filter-content {
+    z-index: 101;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }

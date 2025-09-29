@@ -13,6 +13,15 @@ class PackageSearch {
         this.filteredPackages = [];
         this.debounceTimer = null;
         
+        // Filter-related properties
+        this.selectedFilter = null;
+        this.packageNames = new Set();
+        this.filterCounts = new Map();
+        
+        // Debounce timers for performance
+        this.filterDebounceTimer = null;
+        this.filterSearchDebounceTimer = null;
+        
         this.init();
     }
     
@@ -21,9 +30,16 @@ class PackageSearch {
         this.originalPackages = Array.from(document.querySelectorAll('.package-card'));
         this.filteredPackages = [...this.originalPackages];
         
+        // Extract unique package names and build filter data
+        this.extractPackageNames();
+        this.buildFilterCounts();
+        
         // Set up event listeners
         this.searchInput.addEventListener('input', (e) => this.handleSearch(e.target.value));
         this.searchClear.addEventListener('click', () => this.clearSearch());
+        
+        // Initialize filter menu
+        this.initializeFilterMenu();
         
         // Initial render
         this.renderPackages(this.filteredPackages);
@@ -45,16 +61,399 @@ class PackageSearch {
     performSearch(searchTerm) {
         if (!searchTerm.trim()) {
             this.filteredPackages = [...this.originalPackages];
-            this.hideResultsInfo();
         } else {
             this.filteredPackages = this.originalPackages.filter(packageCard => {
                 const packageData = this.getPackageData(packageCard);
                 return this.matchesSearch(packageData, searchTerm);
             });
-            this.showResultsInfo(this.filteredPackages.length);
+            
         }
         
+        this.showResultsInfo(this.filteredPackages.length);
         this.renderPackages(this.filteredPackages);
+    }
+    
+    // Filter-related methods
+    extractPackageNames() {
+        this.packageNames.clear();
+        this.originalPackages.forEach(packageCard => {
+            const packageName = packageCard.querySelector('.package-name')?.textContent?.trim() || '';
+            if (packageName) {
+                this.packageNames.add(packageName);
+            }
+        });
+    }
+    
+    buildFilterCounts() {
+        this.filterCounts.clear();
+        this.originalPackages.forEach(packageCard => {
+            const packageName = packageCard.querySelector('.package-name')?.textContent?.trim() || '';
+            if (packageName) {
+                this.filterCounts.set(packageName, (this.filterCounts.get(packageName) || 0) + 1);
+            }
+        });
+    }
+    
+    initializeFilterMenu() {
+        try {
+            // Check if filter menu already exists
+            let filterMenu = document.getElementById('filter-menu');
+            if (!filterMenu) {
+                // Create filter menu element
+                filterMenu = document.createElement('div');
+                filterMenu.id = 'filter-menu';
+                filterMenu.className = 'filter-menu';
+                filterMenu.setAttribute('role', 'radiogroup');
+                filterMenu.setAttribute('aria-label', 'Filter packages');
+                
+                // Add filter menu to the filter menu container
+                const filterMenuContainer = document.getElementById('filter-menu-container');
+                if (filterMenuContainer) {
+                    filterMenuContainer.appendChild(filterMenu);
+                } else {
+                    // Fallback to search container if container doesn't exist
+                    const searchContainer = document.querySelector('.search-container');
+                    if (searchContainer) {
+                        searchContainer.appendChild(filterMenu);
+                    } else {
+                        console.error('Filter menu container not found for filter menu');
+                        return;
+                    }
+                }
+                
+                this.createFilterMenuContent(filterMenu);
+            }
+            
+            // Initialize filter menu functionality
+            this.setupFilterMenuEventListeners();
+            
+            // Initial render of filter options
+            this.updateFilterOptions();
+        } catch (error) {
+            console.error('Error initializing filter menu:', error);
+            // Don't break the entire page if filter menu fails
+        }
+    }
+    
+    createFilterMenuContent(container) {
+        container.innerHTML = `
+            <div class="filter-header">
+                <h3 class="filter-title">Filter by Package</h3>
+                <button class="filter-clear" id="filter-clear" aria-label="Clear filter" style="display: none;">
+                    <i class="fas fa-times" aria-hidden="true"></i>
+                    <span>Clear</span>
+                </button>
+            </div>
+            <div class="filter-content" id="filter-content">
+                <div class="filter-search">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <input
+                        type="text"
+                        id="filter-search"
+                        placeholder="Search filters..."
+                        aria-label="Search filter options"
+                        autocomplete="off"
+                    >
+                </div>
+                <div class="filter-options" id="filter-options" role="radiogroup">
+                    <!-- Filter options will be populated dynamically -->
+                </div>
+            </div>
+        `;
+    }
+    
+    setupFilterMenuEventListeners() {
+        const filterClear = document.getElementById('filter-clear');
+        const filterSearch = document.getElementById('filter-search');
+        const filterMenu = document.getElementById('filter-menu');
+        
+        if (!filterMenu) {
+            console.warn('Filter menu not found');
+            return;
+        }
+        
+        // Clear filters
+        if (filterClear) {
+            filterClear.addEventListener('click', () => {
+                this.clearFilters();
+            });
+        }
+        
+        // Filter search
+        if (filterSearch) {
+            filterSearch.addEventListener('input', (e) => {
+                this.handleFilterSearch(e.target.value);
+            });
+        }
+        
+        // Handle keyboard navigation for filter search
+        if (filterSearch) {
+            filterSearch.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    filterSearch.value = '';
+                    this.handleFilterSearch('');
+                    filterSearch.blur();
+                }
+            });
+        }
+    }
+    
+    updateFilterOptions() {
+        try {
+            const filterOptions = document.getElementById('filter-options');
+            if (!filterOptions) {
+                console.warn('Filter options container not found');
+                return;
+            }
+            
+            // Sort package names alphabetically
+            const sortedPackageNames = Array.from(this.packageNames).sort();
+            
+            // Create filter option elements
+            filterOptions.innerHTML = '';
+            
+            // Add "All" option with total package count
+            const totalPackageCount = this.originalPackages.length;
+            const allFilterOption = this.createFilterOption('All', totalPackageCount, this.selectedFilter === null || this.selectedFilter === "");
+            filterOptions.appendChild(allFilterOption);
+            
+            // Add package filter options
+            sortedPackageNames.forEach(packageName => {
+                try {
+                    const count = this.filterCounts.get(packageName) || 0;
+                    const isSelected = this.selectedFilter === packageName;
+                    const filterOption = this.createFilterOption(packageName, count, isSelected);
+                    filterOptions.appendChild(filterOption);
+                } catch (optionError) {
+                    console.error('Error creating filter option for package:', packageName, optionError);
+                }
+            });
+            
+            // Add event listeners to radio buttons
+            const radioButtons = filterOptions.querySelectorAll('.filter-radio');
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    this.handleFilterChange(e.target.value, e.target.checked);
+                });
+                
+                // Add keyboard support for radio buttons
+                radio.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        radio.checked = true;
+                        this.handleFilterChange(radio.value, true);
+                    }
+                });
+            });
+            
+            this.updateFilterCount();
+        } catch (error) {
+            console.error('Error updating filter options:', error);
+        }
+    }
+    
+    createFilterOption(text, count, isSelected) {
+        const filterOption = document.createElement('div');
+        filterOption.className = `filter-option ${isSelected ? 'selected' : ''}`;
+        
+        const filterLabel = document.createElement('label');
+        filterLabel.className = 'filter-label';
+        
+        const filterRadio = document.createElement('input');
+        filterRadio.type = 'radio';
+        filterRadio.className = 'filter-radio';
+        filterRadio.name = 'package-filter';
+        
+        // Handle "All" filter specially - display "All" but use null as value
+        if (text === 'All') {
+            filterRadio.value = null; // No filter when "All" is selected
+            filterRadio.setAttribute('data-filter-label', 'All'); // Store display label
+        } else {
+            filterRadio.value = text;
+            filterRadio.setAttribute('data-filter-label', text);
+        }
+        
+        filterRadio.checked = isSelected;
+        filterRadio.setAttribute('aria-label', text);
+        
+        const filterText = document.createElement('span');
+        filterText.className = 'filter-text';
+        filterText.textContent = text;
+        
+        const filterCountBadge = document.createElement('span');
+        filterCountBadge.className = 'filter-count-badge';
+        filterCountBadge.textContent = count;
+        
+        filterLabel.appendChild(filterRadio);
+        filterLabel.appendChild(filterText);
+        filterLabel.appendChild(filterCountBadge);
+        filterOption.appendChild(filterLabel);
+        
+        return filterOption;
+    }
+    
+    handleFilterChange(packageName, isChecked) {
+        try {
+            // For radio buttons, isChecked will always be true when selected
+            // Handle "All" filter specially - null value means no filter
+            this.selectedFilter = packageName;
+            
+            this.updateFilterCount();
+            this.updateFilterOptions(); // This will update the visual state
+            
+            // Debounce filter application for better performance
+            clearTimeout(this.filterDebounceTimer);
+            this.filterDebounceTimer = setTimeout(() => {
+                this.applyFilters();
+            }, 150);
+        } catch (error) {
+            console.error('Error handling filter change:', error);
+        }
+    }
+    
+    
+    handleFilterSearch(searchTerm) {
+        try {
+            const filterOptions = document.getElementById('filter-options');
+            if (!filterOptions) {
+                console.warn('Filter options container not found');
+                return;
+            }
+            
+            // Debounce filter search for better performance
+            clearTimeout(this.filterSearchDebounceTimer);
+            this.filterSearchDebounceTimer = setTimeout(() => {
+                try {
+                    const options = filterOptions.querySelectorAll('.filter-option');
+                    const term = searchTerm.toLowerCase();
+                    
+                    options.forEach(option => {
+                        try {
+                            const text = option.querySelector('.filter-text')?.textContent?.toLowerCase() || '';
+                            option.style.display = text.includes(term) ? 'block' : 'none';
+                        } catch (optionError) {
+                            console.error('Error processing filter option:', optionError);
+                            option.style.display = 'block'; // Show option if there's an error
+                        }
+                    });
+                } catch (searchError) {
+                    console.error('Error during filter search:', searchError);
+                }
+            }, 200);
+        } catch (error) {
+            console.error('Error in filter search handler:', error);
+        }
+    }
+    
+    updateFilterCount() {
+        const filterClear = document.getElementById('filter-clear');
+        
+        if (filterClear) {
+            // Show clear button when a specific filter is selected (not "All")
+            filterClear.style.display = this.selectedFilter !== null && this.selectedFilter !== 'All' ? 'flex' : 'none';
+        }
+    }
+    
+    clearFilters() {
+        try {
+            this.selectedFilter = null; // This represents the "All" filter
+            this.updateFilterCount();
+            this.updateFilterOptions();
+            
+            // Debounce filter application for better performance
+            clearTimeout(this.filterDebounceTimer);
+            this.filterDebounceTimer = setTimeout(() => {
+                this.applyFilters();
+            }, 150);
+        } catch (error) {
+            console.error('Error clearing filters:', error);
+        }
+    }
+    
+    applyFilters() {
+        try {
+            if (this.selectedFilter === null || this.selectedFilter === "") {
+                // "All" filter selected - show all packages (no filtering applied)
+                this.filteredPackages = [...this.originalPackages];
+            } else {
+                // Apply specific filter to original packages
+                this.filteredPackages = this.originalPackages.filter(packageCard => {
+                    try {
+                        const packageName = packageCard.querySelector('.package-name')?.textContent?.trim() || '';
+                        return packageName === this.selectedFilter;
+                    } catch (filterError) {
+                        console.error('Error filtering package card:', filterError);
+                        return false; // Exclude package if there's an error
+                    }
+                });
+            }
+            
+            // Apply search if there's a search term
+            const searchTerm = this.searchInput.value.trim();
+            if (searchTerm) {
+                this.filteredPackages = this.filteredPackages.filter(packageCard => {
+                    try {
+                        const packageData = this.getPackageData(packageCard);
+                        return this.matchesSearch(packageData, searchTerm);
+                    } catch (searchError) {
+                        console.error('Error searching package card:', searchError);
+                        return false; // Exclude package if there's an error
+                    }
+                });
+            }
+            
+            this.renderPackages(this.filteredPackages);
+            this.updateResultsInfo();
+            
+            // Update filter search results if it's active
+            const filterSearch = document.getElementById('filter-search');
+            if (filterSearch && filterSearch.value.trim()) {
+                this.handleFilterSearch(filterSearch.value.trim());
+            }
+        } catch (error) {
+            console.error('Error applying filters:', error);
+            // Fallback to showing all packages
+            this.filteredPackages = [...this.originalPackages];
+            this.renderPackages(this.filteredPackages);
+            this.updateResultsInfo();
+        }
+    }
+    
+    updateResultsInfo() {
+        try {
+            const hasSearchTerm = this.searchInput.value.trim();
+            const hasFilter = this.selectedFilter !== null;
+            
+            if (hasSearchTerm || hasFilter) {
+                this.showResultsInfo(this.filteredPackages.length);
+                
+                // Update results info to include filter information
+                const resultsCount = document.getElementById('results-count');
+                if (resultsCount) {
+                    let resultText = '';
+                    if (hasSearchTerm && hasFilter) {
+                        if (this.selectedFilter === null) {
+                            resultText = `${this.filteredPackages.length} packages found with search and "All" filter`;
+                        } else {
+                            resultText = `${this.filteredPackages.length} packages found with search and filter`;
+                        }
+                    } else if (hasSearchTerm) {
+                        resultText = `${this.filteredPackages.length} packages found with search`;
+                    } else if (hasFilter) {
+                        if (this.selectedFilter === null) {
+                            resultText = `${this.filteredPackages.length} packages found with "All" filter`;
+                        } else {
+                            resultText = `${this.filteredPackages.length} packages found with filter`;
+                        }
+                    }
+                    resultsCount.textContent = resultText;
+                }
+            }
+        } catch (error) {
+            console.error('Error updating results info:', error);
+        }
+
+        this.showResultsInfo(this.filteredPackages.length);
     }
     
     getPackageData(packageCard) {
@@ -96,12 +495,6 @@ class PackageSearch {
     showResultsInfo(count) {
         this.resultsCount.textContent = count;
         this.resultsInfo.style.display = 'block';
-        this.totalPackages.style.display = 'none';
-    }
-    
-    hideResultsInfo() {
-        this.resultsInfo.style.display = 'none';
-        this.totalPackages.style.display = 'block';
     }
     
     clearSearch() {
@@ -379,7 +772,8 @@ function showCopyError(button, error) {
 // Copy to clipboard functionality
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize search functionality
-    new PackageSearch();
+    const search = new PackageSearch();
+    search.updateResultsInfo()
     
     // Handle existing copy-query buttons (tags) - use the unified function
     const copyButtons = document.querySelectorAll('.copy-query');
