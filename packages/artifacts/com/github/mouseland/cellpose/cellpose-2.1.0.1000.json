@@ -1,0 +1,34 @@
+{
+    "name": "cellpose",
+    "version": "2.1.0.1000",
+    "query": "com.github.mouseland.cellpose:2.1.0.1000-*",
+    "sources": [
+        {
+            "type": "oras",
+            "repo": "ghcr",
+            "rel": "artifacts/com/github/mouseland/cellpose",
+            "oci-ref": "ghcr.io/applied-systems-biology/jipipe/artifacts/com/github/mouseland/cellpose"
+        }
+    ],
+    "maintainer": {
+        "name": "Ruman Gerst",
+        "email": "ruman.gerst@leibniz-hki.de"
+    },
+    "description": "Cellpose standalone distribution",
+    "homepage": "https://github.com/mouseland/cellpose",
+    "license": "BSD-3-Clause",
+    "tags": [
+        "2.1.0.1000-linux_amd64",
+        "2.1.0.1000-linux_gpu_cu102_amd64",
+        "2.1.0.1000-linux_gpu_cu118_amd64",
+        "2.1.0.1000-linux_gpu_cu121_amd64",
+        "2.1.0.1000-macos_amd64",
+        "2.1.0.1000-windows_amd64",
+        "2.1.0.1000-windows_gpu_cu102_amd64",
+        "2.1.0.1000-windows_gpu_cu118_amd64",
+        "2.1.0.1000-windows_gpu_cu121_amd64"
+    ],
+    "includes": {
+        "pip": []
+    }
+}
