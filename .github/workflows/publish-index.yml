@@ -24,6 +24,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install Python dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install oras
+
+      - name: Validate package downloads
+        run: |
+          python3 scripts/validate_package_downloads.py --packages-dir packages
+        continue-on-error: false
+
       - name: Build validated index.json
         run: |
             python3 scripts/build_index_validating.py \
