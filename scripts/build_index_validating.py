@@ -1,6 +1,5 @@
-
 #!/usr/bin/env python3
-# (Rewriting after kernel reset) Validator-enabled index builder script.
+
 import argparse, json, sys
 from pathlib import Path
 from datetime import datetime, timezone
