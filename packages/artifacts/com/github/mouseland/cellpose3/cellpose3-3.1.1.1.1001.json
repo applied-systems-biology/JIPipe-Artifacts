@@ -1,0 +1,33 @@
+{
+    "name": "cellpose3",
+    "version": "3.1.1.1.1001",
+    "query": "com.github.mouseland.cellpose3:3.1.1.1.1001-*",
+    "sources": [
+        {
+            "type": "oras",
+            "repo": "ghcr",
+            "rel": "artifacts/com/github/mouseland/cellpose3",
+            "oci-ref": "ghcr.io/applied-systems-biology/jipipe/artifacts/com/github/mouseland/cellpose3"
+        }
+    ],
+    "maintainer": {
+        "name": "Ruman Gerst",
+        "email": "ruman.gerst@leibniz-hki.de"
+    },
+    "description": "Cellpose3 standalone distribution",
+    "homepage": "https://github.com/mouseland/cellpose3",
+    "license": "BSD-3-Clause",
+    "tags": [
+        "3.1.1.1.1001-linux_amd64",
+        "3.1.1.1.1001-linux_gpu_cu118_amd64",
+        "3.1.1.1.1001-linux_gpu_cu124_amd64",
+        "3.1.1.1.1001-macos_amd64",
+        "3.1.1.1.1001-macos_arm64",
+        "3.1.1.1.1001-win64_amd64",
+        "3.1.1.1.1001-win64_gpu_cu118_amd64",
+        "3.1.1.1.1001-win64_gpu_cu124_amd64"
+    ],
+    "includes": {
+        "pip": []
+    }
+}
