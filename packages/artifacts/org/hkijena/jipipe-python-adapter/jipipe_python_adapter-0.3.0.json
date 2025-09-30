@@ -15,7 +15,7 @@
         "email": "ruman.gerst@leibniz-hki.de"
     },
     "description": "Python Adapter for JIPipe",
-    "homepage": "https://github.com/applied-systems-biology/jipipe",
+    "homepage": "https://github.com/applied-systems-biology/jipipe-python",
     "license": "MIT",
     "tags": [
         "0.3.0-any"

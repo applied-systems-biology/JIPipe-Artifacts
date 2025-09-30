@@ -1,0 +1,32 @@
+{
+    "name": "ilastik",
+    "version": "1.4.0",
+    "query": "org.embl.ilastik:1.4.0-*",
+    "sources": [
+        {
+            "type": "oras",
+            "repo": "ghcr",
+            "rel": "artifacts/org/embl/ilastik",
+            "oci-ref": "ghcr.io/applied-systems-biology/jipipe/artifacts/org/embl/ilastik"
+        }
+    ],
+    "maintainer": {
+        "name": "Ruman Gerst",
+        "email": "ruman.gerst@leibniz-hki.de"
+    },
+    "description": "Ilastik is a simple, interactive tool for image segmentation, classification, and tracking",
+    "homepage": "https://www.ilastik.org/",
+    "license": "GPL-2.0",
+    "tags": [
+        "1.4.0-linux_amd64",
+        "1.4.0-linux_gpu_amd64",
+        "1.4.0-linux_gpu_cu113_amd64",
+        "1.4.0-macos_amd64",
+        "1.4.0-windows_amd64",
+        "1.4.0-windows_gpu_amd64",
+        "1.4.0-windows_gpu_cu113_amd64"
+    ],
+    "includes": {
+        "pip": []
+    }
+}

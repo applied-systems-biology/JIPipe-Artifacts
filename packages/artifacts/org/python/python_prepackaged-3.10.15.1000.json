@@ -15,7 +15,7 @@
         "email": "ruman.gerst@leibniz-hki.de"
     },
     "description": "Standalone Python distribution",
-    "homepage": "https://github.com/applied-systems-biology/jipipe",
+    "homepage": "https://github.com/astral-sh/python-build-standalone",
     "license": "MPL-2.0",
     "tags": [
         "3.10.15.1000-windows_amd64",

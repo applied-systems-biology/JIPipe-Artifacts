@@ -15,7 +15,7 @@
         "email": "ruman.gerst@leibniz-hki.de"
     },
     "description": "Fiji sample images (repackaged)",
-    "homepage": "https://github.com/applied-systems-biology/jipipe",
+    "homepage": "https://imagej.net/plugins/samples",
     "license": "GPL-3.0",
     "tags": [
         "1.0.0.1000-any"
