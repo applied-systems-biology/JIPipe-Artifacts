@@ -1,0 +1,27 @@
+{
+    "name": "napari",
+    "version": "0.5.5.1000",
+    "query": "org.napari.napari:0.5.5.1000-*",
+    "sources": [
+        {
+            "type": "oras",
+            "repo": "ghcr",
+            "rel": "artifacts/org/napari/napari",
+            "oci-ref": "ghcr.io/applied-systems-biology/jipipe/artifacts/org/napari/napari"
+        }
+    ],
+    "maintainer": {
+        "name": "Ruman Gerst",
+        "email": "ruman.gerst@leibniz-hki.de"
+    },
+    "description": "napari - fast, interactive, multi-dimensional image viewer for Python",
+    "homepage": "https://napari.org",
+    "license": "BSD-3-Clause",
+    "tags": [
+        "0.5.5.1000-linux",
+        "0.5.5.1000-macos",
+        "0.5.5.1000-macos-arm",
+        "0.5.5.1000-windows"
+    ],
+    "includes": []
+}
