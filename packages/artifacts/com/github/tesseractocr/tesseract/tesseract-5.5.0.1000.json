@@ -1,0 +1,26 @@
+{
+  "name": "tesseract",
+  "version": "5.5.0.1000",
+  "query": "com.github.tesseractocr.tesseract:5.5.0.1000-*",
+  "sources": [
+    {
+      "type": "oras",
+      "repo": "ghcr",
+      "rel": "artifacts/com/github/tesseractocr/tesseract",
+      "oci-ref": "ghcr.io/applied-systems-biology/jipipe/artifacts/com/github/tesseractocr/tesseract"
+    }
+  ],
+  "maintainer": {
+    "name": "Ruman Gerst",
+    "email": "ruman.gerst@leibniz-hki.de"
+  },
+  "description": "Tesseract OCR is an open-source OCR engine with support for many languages",
+  "homepage": "https://github.com/tesseract-ocr/tesseract",
+  "license": "Apache-2.0",
+  "tags": [
+    "5.5.0.1000-linux_amd64_wine",
+    "5.5.0.1000-macos_amd64_wine",
+    "5.5.0.1000-windows_amd64"
+  ],
+  "includes": {}
+}
