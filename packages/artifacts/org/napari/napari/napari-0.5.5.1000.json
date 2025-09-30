@@ -18,10 +18,10 @@
     "homepage": "https://napari.org",
     "license": "BSD-3-Clause",
     "tags": [
-        "0.5.5.1000-linux",
-        "0.5.5.1000-macos",
-        "0.5.5.1000-macos-arm",
-        "0.5.5.1000-windows"
+        "0.5.5.1000-linux_amd64",
+        "0.5.5.1000-macos_amd64",
+        "0.5.5.1000-macos_arm64",
+        "0.5.5.1000-windows_amd64"
     ],
     "includes": []
 }
