@@ -1,0 +1,30 @@
+{
+    "name": "omnipose",
+    "version": "0.2.1",
+    "query": "com.github.kevinjohncutler.omnipose:0.2.1-*",
+    "sources": [
+        {
+            "type": "oras",
+            "repo": "ghcr",
+            "rel": "artifacts/com/github/kevinjohncutler/omnipose",
+            "oci-ref": "ghcr.io/applied-systems-biology/jipipe/artifacts/com/github/kevinjohncutler/omnipose"
+        }
+    ],
+    "maintainer": {
+        "name": "Ruman Gerst",
+        "email": "ruman.gerst@leibniz-hki.de"
+    },
+    "description": "Omnipose: an improved version of Cellpose with better generalization",
+    "homepage": "https://github.com/kevinjohncutler/omnipose",
+    "license": "BSD-3-Clause",
+    "tags": [
+        "0.2.1-linux_amd64",
+        "0.2.1-linux_gpu_amd64",
+        "0.2.1-macos_amd64",
+        "0.2.1-windows_amd64",
+        "0.2.1-windows_gpu_amd64"
+    ],
+    "includes": {
+        "pip": []
+    }
+}
