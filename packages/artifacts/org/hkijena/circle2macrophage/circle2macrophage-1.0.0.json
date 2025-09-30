@@ -1,0 +1,30 @@
+{
+  "name": "circle2macrophage",
+  "version": "1.0.0",
+  "query": "org.hkijena.circle2macrophage:1.0.0-*",
+  "sources": [
+    {
+      "type": "oras",
+      "repo": "ghcr",
+      "rel": "artifacts/org/hkijena/circle2macrophage",
+      "oci-ref": "ghcr.io/applied-systems-biology/jipipe/artifacts/org/hkijena/circle2macrophage"
+    }
+  ],
+  "maintainer": {
+    "name": "Ruman Gerst",
+    "email": "ruman.gerst@leibniz-hki.de"
+  },
+  "description": "Circle2macrophage tool for cell analysis",
+  "homepage": "https://github.com/hkijena/circle2macrophage",
+  "license": "BSD-2-Clause",
+  "tags": [
+    "1.0.0-linux_amd64",
+    "1.0.0-linux_amd64_gpu_cu118",
+    "1.0.0-linux_amd64_gpu_cu121",
+    "1.0.0-macos_amd64",
+    "1.0.0-windows_amd64",
+    "1.0.0-windows_amd64_gpu_cu118",
+    "1.0.0-windows_amd64_gpu_cu121"
+  ],
+  "includes": {}
+}
