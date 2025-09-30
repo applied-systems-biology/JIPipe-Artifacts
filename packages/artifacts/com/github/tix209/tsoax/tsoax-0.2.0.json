@@ -1,0 +1,27 @@
+{
+    "name": "tsoax",
+    "version": "0.2.0",
+    "query": "com.github.tix209.tsoax:0.2.0-*",
+    "sources": [
+        {
+            "type": "oras",
+            "repo": "ghcr",
+            "rel": "artifacts/com/github/tix209/tsoax",
+            "oci-ref": "ghcr.io/applied-systems-biology/jipipe/artifacts/com/github/tix209/tsoax"
+        }
+    ],
+    "maintainer": {
+        "name": "Ruman Gerst",
+        "email": "ruman.gerst@leibniz-hki.de"
+    },
+    "description": "TSOAX: A tool for analyzing and processing biological image data",
+    "homepage": "https://github.com/tix209/tsoax",
+    "license": "LGPL-3.0",
+    "tags": [
+        "0.2.0-linux_amd64",
+        "0.2.0-macos_arm64",
+        "0.2.0-windows_amd64"
+    ],
+    "includes": {
+    }
+}
