@@ -4,9 +4,23 @@ This file provides mode-specific guidance for AI assistants working in code mode
 
 ## Custom Utilities That Replace Standard Approaches
 
-- **Package JSON validation**: Use [`scripts/build_index_validating.py`](scripts/build_index_validating.py) instead of generic JSON validation - it enforces strict field ordering and business rules
+- **Package JSON validation**: Use [`scripts/build_index_validating.py`](scripts/build_index_validating.py) instead of generic JSON validation - it enforces strict field ordering and business rules. The [`package.schema.json`](package.schema.json) file can be used as an additional validation tool alongside Python scripts.
 - **Package download validation**: Use [`scripts/validate_package_downloads.py`](scripts/validate_package_downloads.py) instead of generic HTTP/OCI checks - it validates both ORAS and HTTP sources with project-specific logic
 - **Index building**: The build script automatically validates and transforms package definitions into the final index format
+- **JSON Schema validation**: Use [`package.schema.json`](package.schema.json) for additional validation of package JSON files according to JIPipe standards - can be used with any JSON Schema validator
+
+## JSON Schema File
+
+- **Location**: [`package.schema.json`](package.schema.json)
+- **Purpose**: Validates package JSON files according to JIPipe standards
+- **Usage**: Can be used with JSON Schema validators to validate package definitions
+- **Key features**:
+  - Validates required and optional fields
+  - Enforces field ordering (name, version, query, sources, maintainer, description, homepage, license, tags, includes)
+  - Validates ORAS and HTTP source types
+  - Ensures query format compliance
+  - Validates tag patterns and prefixes
+  - Prevents deprecated fields
 
 ## Non-Standard Patterns Unique to This Project
 
