@@ -8,7 +8,7 @@
     },
     "description": "Omnipose: an improved version of Cellpose with better generalization",
     "homepage": "https://github.com/kevinjohncutler/omnipose",
-    "license": "BSD-3-Clause",
+    "license": "https://github.com/kevinjohncutler/omnipose/blob/main/LICENSE",
     "sources": [
         {
             "type": "oras",

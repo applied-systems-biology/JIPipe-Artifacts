@@ -16,7 +16,7 @@
     },
     "description": "Omnipose: an improved version of Cellpose with better generalization",
     "homepage": "https://github.com/kevinjohncutler/omnipose",
-    "license": "BSD-3-Clause",
+    "license": "https://github.com/kevinjohncutler/omnipose/blob/main/LICENSE",
     "tags": [
         "0.2.1-linux_amd64",
         "0.2.1-linux_gpu_amd64",

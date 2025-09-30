@@ -1,0 +1,25 @@
+{
+    "name": "sample_images",
+    "version": "1.0.0.1000",
+    "query": "sc.fiji.sample_images:1.0.0.1000-*",
+    "sources": [
+        {
+            "type": "oras",
+            "repo": "ghcr",
+            "rel": "artifacts/sc/fiji/sample_images",
+            "oci-ref": "ghcr.io/applied-systems-biology/jipipe/artifacts/sc/fiji/sample_images"
+        }
+    ],
+    "maintainer": {
+        "name": "Ruman Gerst",
+        "email": "ruman.gerst@leibniz-hki.de"
+    },
+    "description": "Fiji sample images (repackaged)",
+    "homepage": "https://github.com/applied-systems-biology/jipipe",
+    "license": "GPL-3.0",
+    "tags": [
+        "1.0.0.1000-any"
+    ],
+    "includes": {
+    }
+}
