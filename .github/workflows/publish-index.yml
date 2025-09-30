@@ -59,6 +59,11 @@ jobs:
           cd template
           hugo
 
+      - name: Copy schema files to Hugo static directory
+        run: |
+          mkdir -p template/static/schemas
+          cp schemas/*.json template/static/schemas/
+
       - name: Copy index.json to Hugo public directory
         run: |
           cp dist/index.json template/public/index.json

@@ -1,0 +1,202 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://applied-systems-biology.github.io/JIPipe-Artifacts/schemas/package.schema.json",
+  "title": "JIPipe Package Definition",
+  "description": "JSON Schema for JIPipe package definitions",
+  "type": "object",
+  "required": [
+    "name",
+    "version",
+    "query",
+    "sources",
+    "maintainer",
+    "tags"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The name of the package"
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Version string (can be simple or complex)",
+      "pattern": "^[0-9]+(\\.[0-9]+)*$"
+    },
+    "query": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Maven-style query pattern with wildcard",
+      "pattern": "^[a-zA-Z0-9._-]+\\.[a-zA-Z0-9._-]+:[0-9]+(\\.[0-9]+)*-\\*$"
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "oneOf": [
+          {
+            "type": "object",
+            "required": ["type", "repo", "rel", "oci-ref"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "oras"
+              },
+              "repo": {
+                "type": "string",
+                "minLength": 1
+              },
+              "rel": {
+                "type": "string",
+                "minLength": 1
+              },
+              "oci-ref": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^([a-zA-Z0-9-]+\\.)*[a-zA-Z0-9-]+:[a-zA-Z0-9._-]+(/[a-zA-Z0-9._-]+)*$"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["type", "repo", "urls"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "http"
+              },
+              "repo": {
+                "type": "string",
+                "minLength": 1
+              },
+              "urls": {
+                "type": "object",
+                "patternProperties": {
+                  "^[a-zA-Z0-9._-]+$": {
+                    "type": "string",
+                    "format": "uri",
+                    "pattern": "^https?://"
+                  }
+                },
+                "minProperties": 1
+              }
+            }
+          }
+        ]
+      }
+    },
+    "maintainer": {
+      "type": "object",
+      "required": ["name", "email"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Maintainer name"
+        },
+        "email": {
+          "type": "string",
+          "minLength": 1,
+          "format": "email",
+          "description": "Maintainer email address"
+        }
+      }
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Package description"
+    },
+    "homepage": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https?://",
+      "description": "Package homepage URL"
+    },
+    "license": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Package license identifier or URL"
+    },
+    "tags": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[0-9]+(\\.[0-9]+)*-.*$"
+      },
+      "description": "Array of tags, all must start with version- prefix"
+    },
+    "includes": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "pip": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cran": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Flexible object for additional package includes"
+    }
+  },
+  "additionalProperties": false,
+  "errorMessage": {
+    "required": {
+      "name": "name is required",
+      "version": "version is required",
+      "query": "query is required",
+      "sources": "sources is required",
+      "maintainer": "maintainer is required",
+      "tags": "tags is required"
+    },
+    "properties": {
+      "name": "name must be a non-empty string",
+      "version": "version must be a non-empty string with valid version pattern",
+      "query": "query must be a non-empty string in format 'group.artifact:version-*'",
+      "sources": "sources must be a non-empty array",
+      "maintainer": "maintainer must be an object with name and email",
+      "tags": "tags must be a non-empty array where all tags start with version- prefix",
+      "description": "description must be a non-empty string",
+      "homepage": "homepage must be a valid HTTP/HTTPS URL",
+      "license": "license must be a non-empty string",
+      "includes": "includes must be an object"
+    },
+    "sources": {
+      "minItems": "sources array must not be empty",
+      "items": "each source must be a valid ORAS or HTTP source object"
+    },
+    "tags": {
+      "minItems": "tags array must not be empty",
+      "items": "each tag must be a non-empty string starting with version- prefix"
+    },
+    "maintainer": {
+      "required": {
+        "name": "maintainer name is required",
+        "email": "maintainer email is required"
+      },
+      "properties": {
+        "name": "maintainer name must be a non-empty string",
+        "email": "maintainer email must be a valid email address"
+      }
+    },
+    "sources.items": {
+      "oneOf": "source must be either ORAS or HTTP type",
+      "properties": {
+        "type": "source type must be either 'oras' or 'http'",
+        "oci-ref": "ORAS oci-ref must be a valid OCI reference",
+        "urls": "HTTP urls must be valid HTTP/HTTPS URLs"
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://applied-systems-biology.github.io/JIPipe-Artifacts/schemas/maintainer.schema.json",
+  "title": "JIPipe Artifacts Maintainer Definition",
+  "description": "JSON Schema for JIPipe artifacts maintainer information objects",
+  "version": "1.0.0",
+  "type": "object",
+  "required": ["name", "email"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Maintainer name",
+      "examples": ["JIPipe Team", "John Doe", "Jane Smith"]
+    },
+    "email": {
+      "type": "string",
+      "minLength": 1,
+      "format": "email",
+      "description": "Maintainer email address",
+      "examples": ["info@applied-systems-biology.org", "john@example.com", "jane@organization.org"]
+    }
+  },
+  "additionalProperties": false,
+  "errorMessage": {
+    "required": {
+      "name": "maintainer name is required",
+      "email": "maintainer email is required"
+    },
+    "properties": {
+      "name": "maintainer name must be a non-empty string",
+      "email": "maintainer email must be a valid email address"
+    }
+  }
+}

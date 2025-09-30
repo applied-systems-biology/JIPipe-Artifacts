@@ -1,0 +1,51 @@
+{
+  "title": "JIPipe Artifacts Index v1 - Schema Index",
+  "description": "Index of all JSON schemas for the JIPipe Artifacts Index v1 standard",
+  "version": "1.0.0",
+  "generated": "2025-09-30T12:33:22.060Z",
+  "schemas": [
+    {
+      "filename": "index.schema.json",
+      "title": "JIPipe Artifacts Index v1",
+      "description": "JSON Schema for JIPipe Artifacts Index v1 - A standardized format for distributing scientific software packages",
+      "version": "1.0.0",
+      "$id": "https://applied-systems-biology.github.io/JIPipe-Artifacts/schemas/index.schema.json",
+      "file_size": 250,
+      "last_modified": "2025-09-30T12:33:22.060Z"
+    },
+    {
+      "filename": "package.schema.json",
+      "title": "JIPipe Package Definition",
+      "description": "JSON Schema for JIPipe package definitions",
+      "version": "1.0.0",
+      "$id": "https://applied-systems-biology.github.io/JIPipe-Artifacts/schemas/package.schema.json",
+      "file_size": 202,
+      "last_modified": "2025-09-30T12:33:22.060Z"
+    },
+    {
+      "filename": "source.schema.json",
+      "title": "JIPipe Artifacts Source Definition",
+      "description": "JSON Schema for JIPipe artifacts source objects (ORAS and HTTP)",
+      "version": "1.0.0",
+      "$id": "https://applied-systems-biology.github.io/JIPipe-Artifacts/schemas/source.schema.json",
+      "file_size": 70,
+      "last_modified": "2025-09-30T12:33:22.060Z"
+    },
+    {
+      "filename": "maintainer.schema.json",
+      "title": "JIPipe Artifacts Maintainer Definition",
+      "description": "JSON Schema for JIPipe artifacts maintainer information objects",
+      "version": "1.0.0",
+      "$id": "https://applied-systems-biology.github.io/JIPipe-Artifacts/schemas/maintainer.schema.json",
+      "file_size": 30,
+      "last_modified": "2025-09-30T12:33:22.060Z"
+    }
+  ],
+  "access_urls": {
+    "index.schema.json": "https://applied-systems-biology.github.io/JIPipe-Artifacts/schemas/index.schema.json",
+    "package.schema.json": "https://applied-systems-biology.github.io/JIPipe-Artifacts/schemas/package.schema.json",
+    "source.schema.json": "https://applied-systems-biology.github.io/JIPipe-Artifacts/schemas/source.schema.json",
+    "maintainer.schema.json": "https://applied-systems-biology.github.io/JIPipe-Artifacts/schemas/maintainer.schema.json",
+    "index.json": "https://applied-systems-biology.github.io/JIPipe-Artifacts/schemas/index.json"
+  }
+}

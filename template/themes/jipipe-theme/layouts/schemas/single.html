@@ -1,0 +1,15 @@
+{{ define "main" }}
+<section class="schemas-section">
+    <div class="container">
+        <div class="schemas-content">
+            <h1 class="schemas-title">{{ .Title }}</h1>
+            <div class="schemas-description">
+                {{ .Description }}
+            </div>
+            <div class="schemas-body">
+                {{ .Content }}
+            </div>
+        </div>
+    </div>
+</section>
+{{ end }}

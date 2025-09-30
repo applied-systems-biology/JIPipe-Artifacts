@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://applied-systems-biology.github.io/JIPipe-Artifacts/schemas/source.schema.json",
+  "title": "JIPipe Artifacts Source Definition",
+  "description": "JSON Schema for JIPipe artifacts source objects (ORAS and HTTP)",
+  "version": "1.0.0",
+  "type": "object",
+  "oneOf": [
+    {
+      "type": "object",
+      "title": "ORAS Source",
+      "description": "ORAS (OCI Registry As Storage) source configuration",
+      "required": ["type", "repo", "rel", "oci-ref"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "oras",
+          "description": "Source type identifier - must be 'oras'"
+        },
+        "repo": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Repository URL for the ORAS source",
+          "examples": ["ghcr.io/applied-systems-biology/jipipe/artifacts/org/napari/napari"]
+        },
+        "rel": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Relative path to the package metadata file",
+          "examples": ["org/napari/napari/napari-0.5.5.1000.json"]
+        },
+        "oci-ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^([a-zA-Z0-9-]+\\.)*[a-zA-Z0-9-]+:[a-zA-Z0-9._-]+(/[a-zA-Z0-9._-]+)*$",
+          "description": "Full OCI reference for the container image",
+          "examples": ["ghcr.io/applied-systems-biology/jipipe/artifacts/org/napari/napari/napari:0.5.5.1000"]
+        }
+      }
+    },
+    {
+      "type": "object",
+      "title": "HTTP Source",
+      "description": "HTTP source configuration for direct file downloads",
+      "required": ["type", "repo", "urls"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "http",
+          "description": "Source type identifier - must be 'http'"
+        },
+        "repo": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Base repository URL for HTTP downloads",
+          "examples": ["https://github.com/napari/napari/releases/download"]
+        },
+        "urls": {
+          "type": "object",
+          "description": "Object mapping platform tags to download URLs",
+          "additionalProperties": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://"
+          },
+          "propertyNames": {
+            "type": "string",
+            "description": "Platform identifier (e.g., 'linux-amd64', 'darwin-arm64')"
+          },
+          "minProperties": 1,
+          "examples": {
+            "linux-amd64": "https://github.com/napari/napari/releases/download/v0.5.5/napari-0.5.5-cp310-cp310-manylinux_2_17_x86_64.whl",
+            "darwin-arm64": "https://github.com/napari/napari/releases/download/v0.5.5/napari-0.5.5-cp310-cp310-macosx_11_0_arm64.whl"
+          }
+        }
+      }
+    }
+  ],
+  "errorMessage": {
+    "oneOf": "source must be either ORAS or HTTP type",
+    "properties": {
+      "type": "source type must be either 'oras' or 'http'",
+      "oci-ref": "ORAS oci-ref must be a valid OCI reference",
+      "urls": "HTTP urls must be valid HTTP/HTTPS URLs"
+    }
+  }
+}

@@ -10,8 +10,9 @@
             <nav class="nav">
                 <ul class="nav-list">
                     <li class="nav-item"><a href="{{ .Site.Params.jipipe_url }}">Home</a></li>
-                    <li class="nav-item"><a href="#packages">Packages</a></li>
-                    <li class="nav-item"><a href="#about">About</a></li>
+                    <li class="nav-item"><a href="{{ .Site.BaseURL }}">Packages</a></li>
+                    <li class="nav-item"><a href="{{ .Site.BaseURL }}schemas/">Schemas</a></li>
+                    <li class="nav-item"><a href="{{ .Site.BaseURL }}index.json" target="_blank" rel="noopener noreferrer" class="api-link">API</a></li>
                 </ul>
             </nav>
         </div>

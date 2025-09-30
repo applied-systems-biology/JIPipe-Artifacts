@@ -1,0 +1,250 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://applied-systems-biology.github.io/JIPipe-Artifacts/schemas/index.schema.json",
+  "title": "JIPipe Artifacts Index v1",
+  "description": "JSON Schema for JIPipe Artifacts Index v1 - A standardized format for distributing scientific software packages",
+  "version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "integer",
+      "description": "Index version number, must be 1 for v1",
+      "minimum": 1,
+      "maximum": 1,
+      "examples": [1]
+    },
+    "owner": {
+      "type": "string",
+      "description": "GitHub organization name that owns the repository",
+      "pattern": "^[a-zA-Z0-9._-]+$",
+      "examples": ["applied-systems-biology"]
+    },
+    "repo": {
+      "type": "string",
+      "description": "GitHub repository name containing the artifacts",
+      "pattern": "^[a-zA-Z0-9._-]+$",
+      "examples": ["JIPipe-Artifacts"]
+    },
+    "base": {
+      "type": "string",
+      "description": "Base GHCR (GitHub Container Registry) URL prefix",
+      "pattern": "^ghcr.io/",
+      "examples": ["ghcr.io/applied-systems-biology/jipipe/"]
+    },
+    "prefix": {
+      "type": "string",
+      "description": "Logical prefix for organizing artifacts in the registry",
+      "examples": ["artifacts"]
+    },
+    "updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the index was last updated",
+      "examples": ["2023-12-07T10:30:00Z"]
+    },
+    "packages": {
+      "type": "object",
+      "description": "Object mapping query patterns to package objects",
+      "additionalProperties": {
+        "$ref": "#/$defs/package"
+      },
+      "propertyNames": {
+        "type": "string",
+        "description": "Query pattern key used to map to packages",
+        "pattern": "^[a-zA-Z0-9._-]+\\.[a-zA-Z0-9._-]+:[0-9]+(\\.[0-9]+)*-\\*$"
+      },
+      "examples": {
+        "org.napari.napari:0.5.5-*": {
+          "name": "napari",
+          "version": "0.5.5.1000",
+          "query": "org.napari.napari:0.5.5-*",
+          "tags": ["version-0.5.5.1000"],
+          "maintainer": {
+            "name": "JIPipe Team",
+            "email": "info@applied-systems-biology.org"
+          },
+          "description": "Fast, interactive, multi-dimensional image viewer for Python",
+          "homepage": "https://napari.org/",
+          "license": "BSD-3-Clause",
+          "sources": [
+            {
+              "type": "oras",
+              "repo": "ghcr.io/applied-systems-biology/jipipe/artifacts/org/napari/napari",
+              "rel": "org/napari/napari/napari-0.5.5.1000.json",
+              "oci-ref": "ghcr.io/applied-systems-biology/jipipe/artifacts/org/napari/napari/napari:0.5.5.1000"
+            }
+          ],
+          "updated": "2023-12-07T10:30:00Z"
+        }
+      }
+    }
+  },
+  "required": ["version", "owner", "repo", "base", "prefix", "updated", "packages"],
+  "$defs": {
+    "package": {
+      "type": "object",
+      "description": "Package object containing metadata and distribution information",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Package name",
+          "minLength": 1,
+          "examples": ["napari", "cellpose", "tesseract"]
+        },
+        "version": {
+          "type": "string",
+          "description": "Package version following semantic versioning pattern",
+          "pattern": "^[0-9]+(\\.[0-9]+)*$",
+          "examples": ["0.5.5.1000", "2.1.0", "1.4.0"]
+        },
+        "query": {
+          "type": "string",
+          "description": "Maven-style query pattern used for package resolution",
+          "pattern": "^[a-zA-Z0-9._-]+\\.[a-zA-Z0-9._-]+:[0-9]+(\\.[0-9]+)*-\\*$",
+          "examples": ["org.napari.napari:0.5.5-*", "com.github.mouseland.cellpose:2.1.0-*"]
+        },
+        "tags": {
+          "type": "array",
+          "description": "Array of available version tags for the package",
+          "items": {
+            "type": "string",
+            "pattern": "^version-[0-9]+(\\.[0-9]+)*$"
+          },
+          "minItems": 1,
+          "examples": [["version-0.5.5.1000", "version-0.5.5"]]
+        },
+        "maintainer": {
+          "type": "object",
+          "description": "Package maintainer information",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Maintainer name",
+              "minLength": 1,
+              "examples": ["JIPipe Team", "John Doe"]
+            },
+            "email": {
+              "type": "string",
+              "format": "email",
+              "description": "Maintainer email address",
+              "examples": ["info@applied-systems-biology.org", "john@example.com"]
+            }
+          },
+          "required": ["name", "email"]
+        },
+        "description": {
+          "type": "string",
+          "description": "Brief description of the package and its purpose",
+          "examples": [
+            "Fast, interactive, multi-dimensional image viewer for Python",
+            "Cell segmentation using deep learning",
+            "OCR engine with support for many languages"
+          ]
+        },
+        "homepage": {
+          "type": "string",
+          "format": "uri",
+          "description": "Homepage URL for the package or project",
+          "examples": ["https://napari.org/", "https://cellpose.org/", "https://github.com/tesseract-ocr/tesseract"]
+        },
+        "license": {
+          "type": "string",
+          "description": "License information for the package",
+          "examples": ["BSD-3-Clause", "MIT", "Apache-2.0"]
+        },
+        "sources": {
+          "type": "array",
+          "description": "Array of source objects for package distribution",
+          "minItems": 1,
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/orasSource"
+              },
+              {
+                "$ref": "#/$defs/httpSource"
+              }
+            ]
+          }
+        },
+        "includes": {
+          "type": "object",
+          "description": "Optional flexible object for additional package-specific metadata",
+          "additionalProperties": true,
+          "examples": [
+            {
+              "platforms": ["linux/amd64", "darwin/amd64"],
+              "dependencies": ["python>=3.8"],
+              "categories": ["image-processing", "microscopy"]
+            }
+          ]
+        },
+        "updated": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp when the package was last updated",
+          "examples": ["2023-12-07T10:30:00Z"]
+        }
+      },
+      "required": ["name", "version", "query", "tags", "maintainer", "sources", "updated"]
+    },
+    "orasSource": {
+      "type": "object",
+      "description": "ORAS (OCI Registry As Storage) source configuration",
+      "properties": {
+        "type": {
+          "const": "oras",
+          "description": "Source type identifier"
+        },
+        "repo": {
+          "type": "string",
+          "description": "Repository URL for the ORAS source",
+          "examples": ["ghcr.io/applied-systems-biology/jipipe/artifacts/org/napari/napari"]
+        },
+        "rel": {
+          "type": "string",
+          "description": "Relative path to the package metadata file",
+          "examples": ["org/napari/napari/napari-0.5.5.1000.json"]
+        },
+        "oci-ref": {
+          "type": "string",
+          "description": "Full OCI reference for the container image",
+          "examples": ["ghcr.io/applied-systems-biology/jipipe/artifacts/org/napari/napari/napari:0.5.5.1000"]
+        }
+      },
+      "required": ["type", "repo", "rel", "oci-ref"]
+    },
+    "httpSource": {
+      "type": "object",
+      "description": "HTTP source configuration for direct file downloads",
+      "properties": {
+        "type": {
+          "const": "http",
+          "description": "Source type identifier"
+        },
+        "repo": {
+          "type": "string",
+          "description": "Base repository URL for HTTP downloads",
+          "examples": ["https://github.com/napari/napari/releases/download"]
+        },
+        "urls": {
+          "type": "object",
+          "description": "Object mapping platform tags to download URLs",
+          "additionalProperties": {
+            "type": "string",
+            "format": "uri"
+          },
+          "propertyNames": {
+            "type": "string",
+            "description": "Platform identifier (e.g., 'linux-amd64', 'darwin-arm64')"
+          },
+          "examples": {
+            "linux-amd64": "https://github.com/napari/napari/releases/download/v0.5.5/napari-0.5.5-cp310-cp310-manylinux_2_17_x86_64.whl",
+            "darwin-arm64": "https://github.com/napari/napari/releases/download/v0.5.5/napari-0.5.5-cp310-cp310-macosx_11_0_arm64.whl"
+          }
+        }
+      },
+      "required": ["type", "repo", "urls"]
+    }
+  }
+}

@@ -1032,3 +1032,267 @@ body {
         transform: translateX(0);
     }
 }
+
+/* Schemas Section Styles */
+.schemas-section {
+    padding: 3rem 0;
+    background: #fff;
+    min-height: 100vh;
+}
+
+.schemas-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.schemas-title {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.schemas-description {
+    text-align: center;
+    color: #666;
+    margin-bottom: 3rem;
+    font-size: 1.1rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.schemas-body {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e1e8ed;
+}
+
+/* Schema documentation specific styles */
+.schemas-body h1 {
+    color: #2c3e50;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #3498db;
+}
+
+.schemas-body h2 {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e1e8ed;
+}
+
+.schemas-body h3 {
+    color: #2c3e50;
+    font-size: 1.2rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.schemas-body h4 {
+    color: #2c3e50;
+    font-size: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.schemas-body p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+    color: #333;
+}
+
+.schemas-body ul, .schemas-body ol {
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+}
+
+.schemas-body li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+}
+
+.schemas-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+    background: #fff;
+    border: 1px solid #e1e8ed;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.schemas-body th, .schemas-body td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #e1e8ed;
+}
+
+.schemas-body th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.schemas-body tr:last-child td {
+    border-bottom: none;
+}
+
+.schemas-body code {
+    background: #f1f3f4;
+    color: #5f6368;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+.schemas-body pre {
+    background: #f8f9fa;
+    border: 1px solid #e1e8ed;
+    border-radius: 4px;
+    padding: 1rem;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+}
+
+.schemas-body pre code {
+    background: none;
+    padding: 0;
+    color: #333;
+}
+
+.schemas-body blockquote {
+    border-left: 4px solid #3498db;
+    padding-left: 1rem;
+    margin: 1rem 0;
+    color: #666;
+    font-style: italic;
+}
+
+.schemas-body a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.schemas-body a:hover {
+    text-decoration: underline;
+}
+
+.schemas-body hr {
+    border: none;
+    border-top: 1px solid #e1e8ed;
+    margin: 2rem 0;
+}
+
+/* Responsive design for schemas section */
+@media (max-width: 768px) {
+    .schemas-section {
+        padding: 2rem 0;
+    }
+    
+    .schemas-title {
+        font-size: 2rem;
+    }
+    
+    .schemas-content {
+        padding: 0 15px;
+    }
+    
+    .schemas-body {
+        padding: 1.5rem;
+    }
+    
+    .schemas-body h1 {
+        font-size: 1.5rem;
+    }
+    
+    .schemas-body h2 {
+        font-size: 1.2rem;
+    }
+    
+    .schemas-body table {
+        font-size: 0.9rem;
+    }
+    
+    .schemas-body th, .schemas-body td {
+        padding: 0.5rem;
+    }
+}
+
+/* Schema file links styling */
+.schemas-body .schema-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.schemas-body .schema-link {
+    background: #3498db;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.3s ease;
+}
+
+.schemas-body .schema-link:hover {
+    background: #2980b9;
+    color: white;
+    text-decoration: none;
+}
+
+/* JSON schema examples styling */
+.schemas-body .json-example {
+    background: #f8f9fa;
+    border: 1px solid #e1e8ed;
+    border-radius: 4px;
+    padding: 1rem;
+    margin: 1rem 0;
+    position: relative;
+}
+
+.schemas-body .json-example::before {
+    content: 'JSON';
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    background: #3498db;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* Schema validation messages */
+.schemas-body .validation-message {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 4px;
+    padding: 1rem;
+    margin: 1rem 0;
+    color: #856404;
+}
+
+.schemas-body .validation-message.error {
+    background: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
+.schemas-body .validation-message.success {
+    background: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
